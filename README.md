@@ -1,5 +1,5 @@
 # Autores
-André Luiz Moratto Barreto, Lucas Gabriel Rios da Silva
+André Luiz Morato Barreto, Lucas Gabriel Rios da Silva
 
 # Study Track
 Este é um projeto de aplicação para gestão de estudos utilizando Python. 
