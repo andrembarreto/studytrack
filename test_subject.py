@@ -1,6 +1,10 @@
 import pytest
 from subject import Subject, GradedAssignment
 from datetime import datetime, timedelta
+import json
+import os
+
+# unit tests
 
 def test_can_identify_meeting_study_goal():
     subject = Subject('example_subject')
@@ -54,3 +58,25 @@ def test_can_identify_study_time_goal_not_overdue():
     
     assert(not subject.is_study_time_goal_overdue())
 
+
+# integration tests
+
+def test_can_store_subject():
+    subject = Subject('example_subject')
+    commom_datetime = datetime(2000, 1, 1, 0, 0, 0, 1)
+
+    subject.add_graded_assignment(GradedAssignment('assignment_A', commom_datetime, 50, 25))
+    subject.add_graded_assignment(GradedAssignment('assignment_B', commom_datetime, 50, 34))
+
+    subject.store('test_subjects.json')
+
+    test_file = open('test_subjects.json', 'r')
+    stored_content = json.loads(test_file.read())
+
+    test_file.close()
+
+    expected_result = subject.to_json()
+
+    assert(expected_result == stored_content)
+
+    os.remove('test_subjects.json')

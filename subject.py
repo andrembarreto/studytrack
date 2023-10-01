@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from graded_assignment import GradedAssignment
+import json
 
 class Subject:
     def __init__(self, name, passing_grade=60):
@@ -39,9 +40,32 @@ class Subject:
     def has_met_study_goal(self):
         return self.time_studied >= self.time_study_goal
     
-    def store(self):
-        pass
+    def to_json(self):
+        def timedelta_to_json(timedelta_obj: timedelta):
+            timedelta_dict = {"days" : timedelta_obj.days,
+                              "seconds" : timedelta_obj.seconds,
+                              "microseconds" : timedelta_obj.microseconds}
+            return json.dumps(timedelta_dict)
+        
+        subject_dict = {"name" : self.name,
+                        "passing_grade" : self.passing_grade,
+                        "time_studied" : timedelta_to_json(self.time_studied),
+                        "time_study_goal" : timedelta_to_json(self.time_study_goal),
+                        "graded_assignments" : self.graded_assignments_list_to_json(self.graded_assignments)}
+        
+        return subject_dict
+        
+    def store(self, file_name='subjects.json'):
+        with open(file_name, "w") as subjects_file:
+            subjects_file.write(json.dumps(self.to_json()))
 
+    @staticmethod
+    def graded_assignments_list_to_json(assignments_list: list[GradedAssignment]):
+            assignments_dict = []
+            for assignment in assignments_list:
+                assignments_dict.append(assignment.to_json())
+            return json.dumps(assignments_dict)
+        
     def load(self):
         pass
     
