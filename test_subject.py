@@ -1,5 +1,5 @@
 import pytest
-from subject import Subject, GradedAssignment
+from subject import Subject, GradedAssignment, SubjectContent
 from datetime import datetime, timedelta
 import json
 import os
@@ -58,6 +58,13 @@ def test_can_identify_study_time_goal_not_overdue():
     
     assert(not subject.is_study_time_goal_overdue())
 
+def test_can_add_subject_content_sorting_by_priority():
+    subject = Subject('example_subject')
+    
+    subject.add_content(SubjectContent('content_A', 2))
+    subject.add_content(SubjectContent('content_B', 1))
+
+    assert(subject.contents[0].priority == 1)
 
 # integration tests
 
@@ -67,6 +74,9 @@ def test_can_store_subject():
 
     subject.add_graded_assignment(GradedAssignment('assignment_A', commom_datetime, 50, 25))
     subject.add_graded_assignment(GradedAssignment('assignment_B', commom_datetime, 50, 34))
+
+    subject.add_content(SubjectContent('content_A', 1))
+    subject.add_content(SubjectContent('content_B', 2))
 
     subject.store('test_subjects.json')
 

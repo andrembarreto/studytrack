@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from graded_assignment import GradedAssignment
+from subject_content import SubjectContent
 import json
 
 class Subject:
@@ -9,9 +10,14 @@ class Subject:
         self.time_studied = timedelta()
         self.time_study_goal = timedelta()
         self.graded_assignments = []
+        self.contents = []
 
     def add_graded_assignment(self, graded_assignment: GradedAssignment):
         self.graded_assignments.append(graded_assignment)
+
+    def add_content(self, content: SubjectContent):
+        self.contents.append(content)
+        self.contents.sort(key=lambda c: c.priority)
 
     def set_time_study_goal(self, goal, goal_deadline: datetime = None):
         self.time_study_goal = goal
@@ -51,7 +57,8 @@ class Subject:
                         "passing_grade" : self.passing_grade,
                         "time_studied" : timedelta_to_json(self.time_studied),
                         "time_study_goal" : timedelta_to_json(self.time_study_goal),
-                        "graded_assignments" : self.graded_assignments_list_to_json(self.graded_assignments)}
+                        "graded_assignments" : self.graded_assignments_list_to_json(self.graded_assignments),
+                        "subject_contents": self.subject_contents_list_to_json(self.contents)}
         
         return subject_dict
         
@@ -65,6 +72,13 @@ class Subject:
             for assignment in assignments_list:
                 assignments_dict.append(assignment.to_json())
             return json.dumps(assignments_dict)
+    
+    @staticmethod
+    def subject_contents_list_to_json(subject_contents: list[SubjectContent]):
+        content_dic = []
+        for content in subject_contents:
+            content_dic.append(content.to_json())
+        return json.dumps(content_dic)
         
     def load(self):
         pass
