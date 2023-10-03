@@ -75,10 +75,10 @@ class Subject:
     
     @staticmethod
     def subject_contents_list_to_json(subject_contents: list[SubjectContent]):
-        content_dic = []
+        content_dict = []
         for content in subject_contents:
-            content_dic.append(content.to_json())
-        return json.dumps(content_dic)
+            content_dict.append(content.to_json())
+        return json.dumps(content_dict)
         
     def load(self):
         pass
