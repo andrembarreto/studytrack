@@ -58,6 +58,13 @@ def test_can_identify_study_time_goal_not_overdue():
     
     assert(not subject.is_study_time_goal_overdue())
 
+def test_goal_should_not_be_overdue_if_no_date_is_set():
+    subject = Subject('example_subject')
+
+    subject.set_time_study_goal(timedelta(hours=10))
+
+    assert(not subject.is_study_time_goal_overdue())
+   
 def test_can_add_subject_content_sorting_by_priority():
     subject = Subject('example_subject')
     

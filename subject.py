@@ -29,7 +29,7 @@ class Subject:
         self.time_studied += time
 
     def is_study_time_goal_overdue(self):
-        if self.goal_deadline:
+        if hasattr(self, "goal_deadline"):
             return datetime.now() >= self.goal_deadline
         
         return False
