@@ -8,6 +8,9 @@ class GradedAssignment:
         self.maximum_score = maximum_score
         self.score = score
 
+    def __eq__(self, __value: object):
+        return isinstance(__value, GradedAssignment) and (self.name == __value.name and self.date == __value.date)
+
     def get_percentage_grade(self):
         return self.score / self.maximum_score
     

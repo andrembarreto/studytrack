@@ -1,6 +1,30 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from graded_assignment import GradedAssignment
 import json
+
+def test_assignments_should_be_considered_equals():
+    common_datetime = datetime(2001, 1, 1, 0, 0, 0, 1)
+
+    first_assignment = GradedAssignment('assignment_A', common_datetime, 20, 5)
+    second_assignment = GradedAssignment('assignment_A', common_datetime, 30, 10)
+
+    assert(first_assignment == second_assignment)
+
+def test_assignments_with_different_dates_should_be_considered_different():
+    common_datetime = datetime(2001, 1, 1, 0, 0, 0, 1)
+
+    first_assignment = GradedAssignment('assignment_A', common_datetime, 20, 5)
+    second_assignment = GradedAssignment('assignment_A', common_datetime + timedelta(days=1), 20, 5)
+
+    assert(not first_assignment == second_assignment)
+
+def test_assignments_with_different_names_should_be_considered_different():
+    common_datetime = datetime(2001, 1, 1, 0, 0, 0, 1)
+
+    first_assignment = GradedAssignment('assignment_A', common_datetime, 20, 5)
+    second_assignment = GradedAssignment('assignment_B', common_datetime, 20, 5)
+
+    assert(not first_assignment == second_assignment)
 
 def test_can_convert_to_json():
     due_date = datetime.now()
