@@ -76,10 +76,10 @@ class Subject:
 
     @staticmethod
     def graded_assignments_list_to_json(assignments_list: list[GradedAssignment]):
-            assignments_dict = []
-            for assignment in assignments_list:
-                assignments_dict.append(assignment.to_json())
-            return json.dumps(assignments_dict)
+        assignments_dict = []
+        for assignment in assignments_list:
+            assignments_dict.append(assignment.to_json())
+        return json.dumps(assignments_dict)
     
     @staticmethod
     def subject_contents_list_to_json(subject_contents: list[SubjectContent]):
