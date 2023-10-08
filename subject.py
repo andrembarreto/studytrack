@@ -16,6 +16,8 @@ class Subject:
         self.graded_assignments.append(graded_assignment)
 
     def add_content(self, content: SubjectContent):
+        if self.__has_content_with_priority(content.priority):
+            raise ValueError(f'There is already a priority {content.priority} content in the subject {self.name}')
         self.contents.append(content)
         self.contents.sort(key=lambda c: c.priority)
 
@@ -65,6 +67,12 @@ class Subject:
     def store(self, file_name='subjects.json'):
         with open(file_name, "w") as subjects_file:
             subjects_file.write(json.dumps(self.to_json()))
+    
+    def __has_content_with_priority(self, priority):
+        for content in self.contents:
+            if content.priority == priority:
+                return True
+        return False
 
     @staticmethod
     def graded_assignments_list_to_json(assignments_list: list[GradedAssignment]):
