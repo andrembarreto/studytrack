@@ -73,6 +73,14 @@ def test_can_add_subject_content_sorting_by_priority():
 
     assert(subject.contents[0].priority == 1)
 
+def test_should_raise_error_when_adding_content_with_priority_already_added():
+    subject = Subject('example_subject')
+
+    subject.add_content(SubjectContent('content_A', 1))
+
+    with pytest.raises(ValueError):
+        subject.add_content(SubjectContent('content_B', 1))
+
 # integration tests
 
 def test_can_store_subject():
