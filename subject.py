@@ -17,7 +17,7 @@ class Subject:
 
     def add_content(self, content: SubjectContent):
         if self.__has_content_with_priority(content.priority):
-            raise ValueError("There is already priority {0} content in the subject {1}".format(content.priority, self.name))
+            raise ValueError(f'There is already a priority {content.priority} content in the subject {self.name}')
         self.contents.append(content)
         self.contents.sort(key=lambda c: c.priority)
 
