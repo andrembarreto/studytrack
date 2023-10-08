@@ -23,3 +23,12 @@ class GradedAssignment:
                      "max_score" : self.maximum_score,
                      "score" : self.score}
         return json.dumps(self_dict)
+    
+    @staticmethod
+    def from_json(json_obj):
+        json_obj = json.loads(json_obj)
+        assignment = GradedAssignment(name=json_obj.get('name'), date=datetime.fromtimestamp(json_obj.get('date')), 
+                                      maximum_score=json_obj.get('max_score'), score=json_obj.get('score'))
+        
+        return assignment
+        

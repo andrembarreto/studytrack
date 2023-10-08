@@ -35,3 +35,11 @@ def test_can_convert_to_json():
                                   'score' : 0})
     
     assert(expected_result == assignment.to_json())
+
+def test_can_retrieve_assignment_from_json_obj():
+    due_date = datetime.now()
+    original_assignment = GradedAssignment('example_assignment', due_date, 50, 25)
+    
+    retrieved_assignment = GradedAssignment.from_json(original_assignment.to_json())
+
+    assert(retrieved_assignment == original_assignment)
