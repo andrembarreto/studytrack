@@ -65,7 +65,7 @@ class Subject:
         return subject_dict
         
     def store(self, file_name='subjects.json'):
-        with open(file_name, "w") as subjects_file:
+        with open(file_name, 'a') as subjects_file:
             subjects_file.write(json.dumps(self.to_json()))
     
     def __has_content_with_priority(self, priority):
