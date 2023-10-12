@@ -12,6 +12,9 @@ class Subject:
         self.graded_assignments = []
         self.contents = []
 
+    def __eq__(self, __value: object):
+        return isinstance(__value, Subject) and self.name == __value.name
+
     def add_graded_assignment(self, graded_assignment: GradedAssignment):
         self.graded_assignments.append(graded_assignment)
 
@@ -62,7 +65,29 @@ class Subject:
                         "graded_assignments" : self.graded_assignments_list_to_json(self.graded_assignments),
                         "subject_contents": self.subject_contents_list_to_json(self.contents)}
         
-        return subject_dict
+        return json.dumps(subject_dict)
+    
+    @staticmethod
+    def from_json(json_obj):
+        def timedelta_from_json(timedelta_obj):
+            return timedelta(days=timedelta_obj.get('days'),
+                             seconds=timedelta_obj.get('seconds'),
+                             microseconds=timedelta_obj.get('microseconds'))
+        
+        json_obj = json.loads(json_obj)
+
+        subject = Subject(name=json_obj.get('name'), passing_grade=json_obj.get('passing_grade'))
+        subject.time_studied = timedelta_from_json(json.loads(json_obj.get('time_studied')))
+        subject.time_study_goal = timedelta_from_json(json.loads(json_obj.get('time_study_goal')))
+        
+        for content in json.loads(json_obj.get('subject_contents')):
+            subject.add_content(SubjectContent.from_json(content))
+        
+        for assignment in json.loads(json_obj.get('graded_assignments')):
+            subject.add_graded_assignment(GradedAssignment.from_json(assignment))
+
+        return subject
+
         
     def store(self, file_name='subjects.json'):
         with open(file_name, 'a') as subjects_file:
@@ -87,7 +112,10 @@ class Subject:
         for content in subject_contents:
             content_dict.append(content.to_json())
         return json.dumps(content_dict)
-        
-    def load(self):
-        pass
-    
+
+    @staticmethod
+    def load(file_name='subjects.json'):
+        with open(file_name, 'r') as subjects_file:
+            subjects_list = json.load(subjects_file.read())
+
+        return subjects_list

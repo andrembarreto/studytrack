@@ -81,6 +81,34 @@ def test_should_raise_error_when_adding_content_with_priority_already_added():
     with pytest.raises(ValueError):
         subject.add_content(SubjectContent('content_B', 1))
 
+def test_retrieve_subject_without_assignments_or_contents_from_json_obj():
+    original_subject = Subject('example_subject')
+
+    retrieved_subject = Subject.from_json(original_subject.to_json())
+
+    assert(retrieved_subject == original_subject)
+
+def test_retrieve_subject_with_assignments_from_json_obj():
+    original_subject = Subject('example_subject')
+    commom_datetime = datetime(2000, 1, 1, 0, 0, 0, 1)
+
+    original_subject.add_graded_assignment(GradedAssignment('assignment_A', commom_datetime, 50, 25))
+    original_subject.add_graded_assignment(GradedAssignment('assignment_B', commom_datetime, 50, 34))
+
+    retrieved_subject = Subject.from_json(original_subject.to_json())
+
+    assert(retrieved_subject == original_subject)
+
+def test_retrieve_subject_with_contents_from_json_obj():
+    original_subject = Subject('example_subject')
+
+    original_subject.add_content(SubjectContent('content_A', 1))
+    original_subject.add_content(SubjectContent('content_B', 2))
+
+    retrieved_subject = Subject.from_json(original_subject.to_json())
+
+    assert(retrieved_subject == original_subject)
+    
 # integration tests
 
 def test_can_store_subject():
