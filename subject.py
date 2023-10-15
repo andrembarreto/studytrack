@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta
 from graded_assignment import GradedAssignment
 from subject_content import SubjectContent
+from attendance import Attendance
 import json
 
 class Subject:
-    def __init__(self, name, passing_grade=60):
+    def __init__(self, name, workload, passing_grade=60):
         self.name = name
         self.passing_grade = passing_grade
+        self.attendance = Attendance(workload)
         self.time_studied = timedelta()
         self.time_study_goal = timedelta()
         self.graded_assignments = []
@@ -51,6 +53,18 @@ class Subject:
     def has_met_study_goal(self):
         return self.time_studied >= self.time_study_goal
     
+    def update_attendance(self, hours):
+        self.attendance.update_current_attendance(hours)
+
+    def get_minimun_attendance(self):
+        return self.attendance.get_minimun_attendance()
+    
+    def has_minimun_attendance(self):
+        return self.attendance.has_minimun_attendance()
+    
+    def get_current_attendance(self):
+        return self.attendance.current_attendance
+    
     def to_json(self):
         def timedelta_to_json(timedelta_obj: timedelta):
             timedelta_dict = {"days" : timedelta_obj.days,
@@ -60,6 +74,7 @@ class Subject:
         
         subject_dict = {"name" : self.name,
                         "passing_grade" : self.passing_grade,
+                        "attendance" : self.attendance.to_json(),
                         "time_studied" : timedelta_to_json(self.time_studied),
                         "time_study_goal" : timedelta_to_json(self.time_study_goal),
                         "graded_assignments" : self.graded_assignments_list_to_json(self.graded_assignments),
@@ -76,7 +91,8 @@ class Subject:
         
         json_obj = json.loads(json_obj)
 
-        subject = Subject(name=json_obj.get('name'), passing_grade=json_obj.get('passing_grade'))
+        subject = Subject(name=json_obj.get('name'), workload=0, passing_grade=json_obj.get('passing_grade'))
+        subject.attendance = Attendance.from_json(json_obj.get('attendance'))
         subject.time_studied = timedelta_from_json(json.loads(json_obj.get('time_studied')))
         subject.time_study_goal = timedelta_from_json(json.loads(json_obj.get('time_study_goal')))
         

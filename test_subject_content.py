@@ -1,5 +1,5 @@
+import pytest
 from subject_content import SubjectContent
-import json
 
 def test_contents_should_be_considered_equals():
     first_content = SubjectContent('example_content_1', 1)
