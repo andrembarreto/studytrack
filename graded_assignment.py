@@ -9,7 +9,10 @@ class GradedAssignment:
         self.score = score
 
     def __eq__(self, __value: object):
-        return isinstance(__value, GradedAssignment) and (self.name == __value.name and self.date == __value.date)
+        def same_day_dates(first_date: datetime, second_date: datetime):
+            return first_date.day == second_date.day and first_date.month == second_date.month and first_date.year == second_date.year
+        
+        return isinstance(__value, GradedAssignment) and self.name == __value.name and same_day_dates(self.date, __value.date)
 
     def get_percentage_grade(self):
         return self.score / self.maximum_score
