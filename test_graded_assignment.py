@@ -1,6 +1,20 @@
+import pytest
 from datetime import datetime, timedelta
 from graded_assignment import GradedAssignment
 import json
+
+def test_should_calculate_and_return_percentage_grade():
+    graded_assignment = GradedAssignment('assignment', datetime(2001, 1, 1, 0, 0, 0, 1), 25, 20)
+
+    assert(graded_assignment.get_percentage_grade() == 0.8)
+
+def test_should_update_date():
+    graded_assignment = GradedAssignment('assignment', datetime(2001, 1, 1, 0, 0, 0, 1), 25, 20)
+    new_datetime = datetime(2023, 1, 1, 0, 0, 0, 1)
+
+    graded_assignment.update_date(new_datetime)
+    
+    assert(graded_assignment.date == new_datetime)
 
 def test_assignments_should_be_considered_equals():
     common_datetime = datetime(2001, 1, 1, 0, 0, 0, 1)
