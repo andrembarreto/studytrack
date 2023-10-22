@@ -31,12 +31,12 @@ def test_should_return_true_when_student_has_minimun_attendance(attendance):
 
 def test_retrieve_attendance_from_json(attendance):
     attendance.update_current_attendance(60)
-    retrieved_attendance = Attendance.from_json(json.dumps({'workload_hours' : 60, 'current_attendance' : 60}))
+    retrieved_attendance = Attendance.from_json(json.dumps({'workload_hours' : 60, 'current_attendance' : 60, 'minimum_attendance_percentage' : 0.75}))
 
     assert(retrieved_attendance == attendance)
 
 def test_convert_attendance_to_json_obj(attendance):
     json_attendance = Attendance.to_json(attendance)
 
-    expected_json = json.dumps({'workload_hours' : 60, 'current_attendance' : 0})
+    expected_json = json.dumps({'workload_hours' : 60, 'current_attendance' : 0, 'minimum_attendance_percentage' : 0.75})
     assert(json_attendance == expected_json)
