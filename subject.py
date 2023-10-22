@@ -56,11 +56,11 @@ class Subject:
     def update_attendance(self, hours):
         self.attendance.update_current_attendance(hours)
 
-    def get_minimun_attendance(self):
-        return self.attendance.get_minimun_attendance()
+    def get_minimum_attendance(self):
+        return self.attendance.get_minimum_attendance()
     
-    def has_minimun_attendance(self):
-        return self.attendance.has_minimun_attendance()
+    def has_minimum_attendance(self):
+        return self.attendance.has_minimum_attendance()
     
     def get_current_attendance(self):
         return self.attendance.current_attendance

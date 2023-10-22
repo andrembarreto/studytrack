@@ -16,11 +16,11 @@ class Attendance:
             raise ValueError('The final attendance value cannot be less than 0')
         self.current_attendance += hours
 
-    def get_minimun_attendance(self):
+    def get_minimum_attendance(self):
         return round(self.workload_hours * self.minimum_attendance_percentage)
 
-    def has_minimun_attendance(self):
-        return self.current_attendance >= self.get_minimun_attendance()
+    def has_minimum_attendance(self):
+        return self.current_attendance >= self.get_minimum_attendance()
     
     def to_json(self):
         attendance_dict = {"workload_hours" : self.workload_hours,

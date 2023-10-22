@@ -18,16 +18,16 @@ def test_should_raise_value_error_when_update_current_attendance_results_in_nega
     with pytest.raises(ValueError):
         attendance.update_current_attendance(-2)
 
-def test_should_return_minimun_attendance(attendance):
-    assert(attendance.get_minimun_attendance() == 45)
+def test_should_return_minimum_attendance(attendance):
+    assert(attendance.get_minimum_attendance() == 45)
 
-def test_should_return_false_when_student_does_not_have_minimun_attendance(attendance):
+def test_should_return_false_when_student_does_not_have_minimum_attendance(attendance):
     attendance.update_current_attendance(44)
-    assert(attendance.has_minimun_attendance() == False)
+    assert(attendance.has_minimum_attendance() == False)
 
-def test_should_return_true_when_student_has_minimun_attendance(attendance):
+def test_should_return_true_when_student_has_minimum_attendance(attendance):
     attendance.update_current_attendance(45)
-    assert(attendance.has_minimun_attendance() == True)
+    assert(attendance.has_minimum_attendance() == True)
 
 def test_retrieve_attendance_from_json(attendance):
     attendance.update_current_attendance(60)

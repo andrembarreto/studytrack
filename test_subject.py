@@ -99,16 +99,16 @@ def test_should_successfully_update_attendance(subject_30_hours):
 
     assert(subject_30_hours.get_current_attendance() == 10)
 
-def test_should_return_minimun_attendance(subject_30_hours):
-    assert(subject_30_hours.get_minimun_attendance() == 22)
+def test_should_return_minimum_attendance(subject_30_hours):
+    assert(subject_30_hours.get_minimum_attendance() == 22)
 
-def test_should_return_false_when_student_does_not_have_minimun_attendance(subject_30_hours):
+def test_should_return_false_when_student_does_not_have_minimum_attendance(subject_30_hours):
     subject_30_hours.update_attendance(21)
-    assert(subject_30_hours.has_minimun_attendance() == False)
+    assert(subject_30_hours.has_minimum_attendance() == False)
 
-def test_should_return_true_when_student_has_minimun_attendance(subject_30_hours):
+def test_should_return_true_when_student_has_minimum_attendance(subject_30_hours):
     subject_30_hours.update_attendance(22)
-    assert(subject_30_hours.has_minimun_attendance() == True)
+    assert(subject_30_hours.has_minimum_attendance() == True)
 
 # integration tests
 
