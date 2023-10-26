@@ -10,5 +10,8 @@ class SubjectController():
         
         self.subjects_list.append(subject)
 
+    def remove_subject(self, subject: Subject):
+        self.subjects_list.remove(subject)
+
     def subject_already_exists(self, subject: Subject):
         return subject in self.subjects_list
