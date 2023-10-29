@@ -7,7 +7,7 @@ import os
 # unit tests
 
 @pytest.fixture
-def subject_30_hours():
+def subject_30_hours() -> Subject:
     return Subject('example_subject', 30)
 
 def test_can_identify_meeting_study_goal(subject_30_hours):
