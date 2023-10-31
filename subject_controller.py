@@ -27,6 +27,14 @@ class SubjectController():
         average_term_grade = total / len(self.subjects_list)
         return average_term_grade
     
+    def get_current_term_credits(self, credit_conversion_method = lambda x: x):
+        total_credits = 0
+
+        for subject in self.subjects_list:
+            total_credits += credit_conversion_method(subject.attendance.workload_hours)
+
+        return total_credits
+    
     def find_by_name(self, subjectName):
         for subject in self.subjects_list:
             if subject.name == subjectName:

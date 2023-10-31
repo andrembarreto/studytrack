@@ -176,3 +176,13 @@ def test_calculate_average_term_grade_with_multiple_subjects(subject_controller)
     result = subject_controller.get_average_term_grade()
 
     assert(result == expected_result)
+
+def test_get_total_credits_with_4_to_1_credit_conversion_method(subject_controller, subject_science, subject_english):
+    subject_controller.add_subject(subject_science)
+    subject_controller.add_subject(subject_english)
+    
+    expected_result = (subject_science.attendance.workload_hours + subject_english.attendance.workload_hours) / 4
+    result = subject_controller.get_current_term_credits(credit_conversion_method = lambda x: x/4)
+
+    assert(result == expected_result)
+    
