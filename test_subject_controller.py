@@ -151,3 +151,28 @@ def test_should_return_empty_when_all_subjects_study_time_goal_overdue(subject_c
     filtered_subjects = subject_controller.filter_by_study_goal_overdue(False)
 
     assert(filtered_subjects.__len__() == 0)
+
+def test_calculate_average_term_grade_with_0_subjects(subject_controller):
+    average_grade = subject_controller.get_average_term_grade()
+    assert (average_grade == 0)
+
+
+def test_calculate_average_term_grade_with_multiple_subjects(subject_controller):
+    first_subject = Subject('first_subject', 100)
+    second_subject = Subject('second_subject', 100)
+
+    midterm_exam = GradedAssignment('midterm_exam', datetime.now(), 50, 25)
+    simple_activity = GradedAssignment('simple_activity', datetime.now(), 10, 10)
+
+    first_subject.add_graded_assignment(midterm_exam)
+    first_subject.add_graded_assignment(simple_activity)
+
+    second_subject.add_graded_assignment(midterm_exam)
+
+    subject_controller.add_subject(first_subject)
+    subject_controller.add_subject(second_subject)
+
+    expected_result = (25 + (25 + 10)) / 2
+    result = subject_controller.get_average_term_grade()
+
+    assert(result == expected_result)

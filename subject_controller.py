@@ -16,6 +16,17 @@ class SubjectController():
     def subject_already_exists(self, subject: Subject):
         return subject in self.subjects_list
     
+    def get_average_term_grade(self):
+        if len(self.subjects_list) == 0:
+            return 0
+        
+        total = 0
+        for subject in self.subjects_list:
+            total += subject.current_grade()
+
+        average_term_grade = total / len(self.subjects_list)
+        return average_term_grade
+    
     def find_by_name(self, subjectName):
         for subject in self.subjects_list:
             if subject.name == subjectName:
