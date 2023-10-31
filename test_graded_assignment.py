@@ -8,6 +8,20 @@ def test_should_calculate_and_return_percentage_grade():
 
     assert(graded_assignment.get_percentage_grade() == 0.8)
 
+def test_should_not_be_able_to_create_assignment_with_null_grade():
+    with pytest.raises(ValueError):
+        graded_assignment = GradedAssignment('assignment', datetime.now(), 0)
+
+def test_should_not_be_able_to_create_assignment_with_negative_grade():
+    with pytest.raises(ValueError):
+        graded_assignment = GradedAssignment('assignment', datetime.now(), -1)
+
+def test_should_get_null_percentage_if_mistakenly_changes_max_score_to_0():
+    graded_assignment = GradedAssignment('assignment', datetime.now(), 10)
+    graded_assignment.maximum_score = 0 # never do this
+    
+    assert(graded_assignment.get_percentage_grade() == 0)
+
 def test_should_update_date():
     graded_assignment = GradedAssignment('assignment', datetime(2001, 1, 1, 0, 0, 0, 1), 25, 20)
     new_datetime = datetime(2023, 1, 1, 0, 0, 0, 1)

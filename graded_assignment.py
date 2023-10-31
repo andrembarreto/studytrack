@@ -3,6 +3,9 @@ import json
 
 class GradedAssignment:
     def __init__(self, name, date: datetime, maximum_score, score=0):
+        if (maximum_score <= 0):
+            raise ValueError('A graded assignment should have a positive grade value')
+        
         self.name = name
         self.date = date
         self.maximum_score = maximum_score
@@ -15,7 +18,13 @@ class GradedAssignment:
         return isinstance(__value, GradedAssignment) and self.name == __value.name and same_day_dates(self.date, __value.date)
 
     def get_percentage_grade(self):
-        return self.score / self.maximum_score
+        try:
+            percentage_grade = self.score / self.maximum_score
+        
+        except ZeroDivisionError: # ideally should not happen, but max score might have been directly altered
+            return 0
+
+        return percentage_grade
     
     def update_date(self, new_date: datetime):
         self.date = new_date
