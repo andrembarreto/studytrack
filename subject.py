@@ -103,11 +103,6 @@ class Subject:
             subject.add_graded_assignment(GradedAssignment.from_json(assignment))
 
         return subject
-
-        
-    def store(self, file_name='subjects.json'):
-        with open(file_name, 'a') as subjects_file:
-            subjects_file.write(json.dumps(self.to_json()))
     
     def __has_content_with_priority(self, priority):
         for content in self.contents:
@@ -128,10 +123,3 @@ class Subject:
         for content in subject_contents:
             content_dict.append(content.to_json())
         return json.dumps(content_dict)
-
-    @staticmethod
-    def load(file_name='subjects.json'):
-        with open(file_name, 'r') as subjects_file:
-            subjects_list = json.load(subjects_file.read())
-
-        return subjects_list

@@ -1,4 +1,5 @@
 from subject import Subject
+import json
 
 class SubjectController():
     def __init__(self):
@@ -11,6 +12,9 @@ class SubjectController():
         self.subjects_list.append(subject)
 
     def remove_subject(self, subject: Subject):
+        if not self.subject_already_exists(subject):
+            raise ValueError('This subject does not exists')
+        
         self.subjects_list.remove(subject)
 
     def subject_already_exists(self, subject: Subject):
@@ -59,4 +63,28 @@ class SubjectController():
                 filtered_subjects.append(subject)
 
         return filtered_subjects
+
+    def store(self, file_name='subjects.json'):
+        subjects_dict = {}
+        
+        for subject in self.subjects_list:
+            subjects_dict[subject.name] = subject.to_json()
+
+        with open(file_name, 'w') as subjects_file:
+            subjects_file.write(json.dumps(subjects_dict, indent=2))
+
+        subjects_file.close()
+            
+    @staticmethod
+    def load(file_name='subjects.json') -> list[Subject]:
+        with open(file_name, 'r') as subjects_file:
+            subjects = dict(json.loads(subjects_file.read()))
+
+        subjects_file.close()
+
+        subjects_list = []
+        for (_, subject_obj) in subjects.items():
+            subjects_list.append(Subject.from_json(subject_obj))
+
+        return subjects_list
     
