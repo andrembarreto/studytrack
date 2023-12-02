@@ -36,7 +36,7 @@ class SubjectController():
         total_credits = 0
 
         for subject in self.subjects_list:
-            if (subject.has_minimum_attendance()):
+            if (subject.has_minimum_attendance() and subject.has_passing_grade()):
                 total_credits += credit_conversion_method(subject.attendance.workload_hours)
 
         return total_credits

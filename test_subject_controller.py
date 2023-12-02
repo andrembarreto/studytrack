@@ -181,6 +181,9 @@ def test_get_total_credits_with_4_to_1_credit_conversion_method(subject_controll
     subject_science.update_attendance(75)
     subject_english.update_attendance(38)
 
+    subject_science.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
+    subject_english.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
+
     subject_controller.add_subject(subject_science)
     subject_controller.add_subject(subject_english)
     
@@ -190,6 +193,13 @@ def test_get_total_credits_with_4_to_1_credit_conversion_method(subject_controll
     assert(result == expected_result)
 
 def test_total_credits_should_not_count_when_student_has_insufficient_attendance(subject_controller, subject_science):
+    subject_science.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
     subject_controller.add_subject(subject_science)
     
+    assert(subject_controller.get_current_term_credits(credit_conversion_method = lambda x: x/4) == 0)
+
+def test_total_credits_should_not_count_when_student_has_not_passing_grade(subject_controller, subject_science):
+    subject_science.update_attendance(75)
+    subject_controller.add_subject(subject_science)
+
     assert(subject_controller.get_current_term_credits(credit_conversion_method = lambda x: x/4) == 0)

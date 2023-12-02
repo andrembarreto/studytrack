@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from subject_controller import SubjectController, Subject
 from graded_assignment import GradedAssignment
 from subject_content import SubjectContent
@@ -62,9 +62,11 @@ def test_check_for_enough_credits_to_graduate(subject_60_hours):
     controller = SubjectController()
 
     subject_60_hours.update_attendance(45)
+    subject_60_hours.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
 
     second_subject_60_hours = Subject('second_example', 60)
     second_subject_60_hours.update_attendance(45)
+    second_subject_60_hours.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
     
     minimal_credits_to_graduate = 8
     credit_conversion_method = lambda x: x / 4
