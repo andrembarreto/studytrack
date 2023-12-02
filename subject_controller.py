@@ -1,5 +1,6 @@
 from subject import Subject
 import json
+import os
 
 class SubjectController():
     def __init__(self):
@@ -65,26 +66,29 @@ class SubjectController():
         return filtered_subjects
 
     def store(self, file_name='subjects.json'):
+        with open(file_name, 'w') as subjects_file:
+            subjects_file.write(self.to_json())
+
+        subjects_file.close()
+
+    def to_json(self):
         subjects_dict = {}
-        
+
         for subject in self.subjects_list:
             subjects_dict[subject.name] = subject.to_json()
 
-        with open(file_name, 'w') as subjects_file:
-            subjects_file.write(json.dumps(subjects_dict, indent=2))
+        return json.dumps(subjects_dict, indent=2)
 
-        subjects_file.close()
-            
-    @staticmethod
-    def load(file_name='subjects.json') -> list[Subject]:
-        with open(file_name, 'r') as subjects_file:
-            subjects = dict(json.loads(subjects_file.read()))
+    def load(self, file_name='subjects.json'):
+        if os.path.exists(file_name):
+            with open(file_name, 'r') as subjects_file:
+                subjects = dict(json.loads(subjects_file.read()))
 
-        subjects_file.close()
+            subjects_file.close()
 
-        subjects_list = []
-        for (_, subject_obj) in subjects.items():
-            subjects_list.append(Subject.from_json(subject_obj))
+            subjects_list = []
+            for (_, subject_obj) in subjects.items():
+                subjects_list.append(Subject.from_json(subject_obj))
 
-        return subjects_list
+            self.subjects_list = subjects_list
     

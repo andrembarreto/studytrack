@@ -28,7 +28,38 @@ def test_adding_subject_is_persistent(subject_30_hours: Subject, file_deleter):
     controller.store(file_name='test_controller.json')
 
     # load stored subjects list
-    retrieved_subjects_list = controller.load(file_name='test_controller.json')
+    controller.load(file_name='test_controller.json')
 
     # check for added subject
-    assert(subject_30_hours in retrieved_subjects_list)
+    assert(subject_30_hours in controller.subjects_list)
+
+def test_removing_subject_is_persistent(subject_30_hours: Subject, file_deleter):
+    controller = SubjectController()
+    controller.add_subject(subject_30_hours)
+
+    # create file with subject in it
+    controller.store(file_name='test_controller.json')
+
+    # load subjects from file
+    controller.load(file_name='test_controller.json')
+
+    assert(subject_30_hours in controller.subjects_list)
+
+    controller.remove_subject(subject_30_hours)
+
+    controller.store('test_controller.json')
+
+    controller.load(file_name='test_controller.json')
+    assert(subject_30_hours not in controller.subjects_list)
+
+def test_removing_subject_that_was_not_stored(subject_30_hours: Subject):
+    controller = SubjectController()
+
+    controller.load('test_controller.json')
+
+    with pytest.raises(ValueError):
+        controller.remove_subject(subject_30_hours)
+
+        
+
+    
