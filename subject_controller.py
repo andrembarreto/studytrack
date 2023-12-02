@@ -41,6 +41,9 @@ class SubjectController():
 
         return total_credits
     
+    def has_enough_credits_to_graduate(self, minimal_credits, credit_conversion_method = lambda x: x):
+        return self.get_current_term_credits(credit_conversion_method) >= minimal_credits
+    
     def find_by_name(self, subjectName):
         for subject in self.subjects_list:
             if subject.name == subjectName:
