@@ -18,9 +18,5 @@ percentual mínimo de assiduidade necessário.
 ## Tecnologias Utilizadas
 O sistema foi implementado utilizando Python.
 
-### PySide6
-Para criação das interfaces, será utilizado PySide6, um wrapper multiplataforma de software livre da linguagem Python para a biblioteca Qt que 
-permite a programação de GUIs.
-
 ### pytest
 Para implementação e execução de testes de unidade e integração, foi utilizado o pytest.
