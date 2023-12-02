@@ -178,6 +178,9 @@ def test_calculate_average_term_grade_with_multiple_subjects(subject_controller)
     assert(result == expected_result)
 
 def test_get_total_credits_with_4_to_1_credit_conversion_method(subject_controller, subject_science, subject_english):
+    subject_science.update_attendance(75)
+    subject_english.update_attendance(38)
+
     subject_controller.add_subject(subject_science)
     subject_controller.add_subject(subject_english)
     
@@ -185,4 +188,8 @@ def test_get_total_credits_with_4_to_1_credit_conversion_method(subject_controll
     result = subject_controller.get_current_term_credits(credit_conversion_method = lambda x: x/4)
 
     assert(result == expected_result)
+
+def test_total_credits_should_not_count_when_student_has_insufficient_attendance(subject_controller, subject_science):
+    subject_controller.add_subject(subject_science)
     
+    assert(subject_controller.get_current_term_credits(credit_conversion_method = lambda x: x/4) == 0)
