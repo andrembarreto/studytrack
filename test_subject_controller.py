@@ -49,8 +49,8 @@ def test_should_return_subjects_in_which_student_has_passing_grade(subject_contr
 
     filtered_subjects = subject_controller.filter_by_passing_grade(has_passing_grade=True)
 
-    assert(filtered_subjects.__len__() == 1)
-    assert(filtered_subjects[0] == subject_english)
+    assert(len(filtered_subjects) == 1)
+    assert(subject_english in filtered_subjects.values())
 
 def test_should_return_subjects_in_which_student_has_not_passing_grade(subject_controller, subject_english, subject_science):
     graded_assignment = GradedAssignment('assignment', datetime(2001, 1, 1, 0, 0, 0, 1), 100, 60)
@@ -62,8 +62,8 @@ def test_should_return_subjects_in_which_student_has_not_passing_grade(subject_c
 
     filtered_subjects = subject_controller.filter_by_passing_grade(has_passing_grade=False)
 
-    assert(filtered_subjects.__len__() == 1)
-    assert(filtered_subjects[0] == subject_science)
+    assert(len(filtered_subjects) == 1)
+    assert(subject_science in filtered_subjects.values())
 
 def test_should_return_empty_when_searching_has_passing_grade_and_student_not_passed_in_any_subject(subject_controller, subject_english, subject_science):
     subject_controller.add_subject(subject_english)
@@ -71,7 +71,7 @@ def test_should_return_empty_when_searching_has_passing_grade_and_student_not_pa
 
     filtered_subjects = subject_controller.filter_by_passing_grade(has_passing_grade=True)
 
-    assert(filtered_subjects.__len__() == 0)
+    assert(len(filtered_subjects) == 0)
 
 def test_should_return_empty_when_searching_has_not_passing_grade_and_student_passed_in_all_subjects(subject_controller, subject_english, subject_science):
     graded_assignment = GradedAssignment('assignment', datetime(2001, 1, 1, 0, 0, 0, 1), 100, 60)
@@ -84,7 +84,7 @@ def test_should_return_empty_when_searching_has_not_passing_grade_and_student_pa
 
     filtered_subjects = subject_controller.filter_by_passing_grade(has_passing_grade=False)
 
-    assert(filtered_subjects.__len__() == 0)
+    assert(len(filtered_subjects) == 0)
 
 def test_should_return_subjects_which_study_time_goal_is_overdue(subject_controller, subject_english, subject_science):
     overdue_date = datetime(2000, 1, 1, 0, 0, 0, 0)
@@ -99,8 +99,8 @@ def test_should_return_subjects_which_study_time_goal_is_overdue(subject_control
 
     filtered_subjects = subject_controller.filter_by_study_goal_overdue(True)
 
-    assert(filtered_subjects.__len__() == 1)
-    assert(filtered_subjects[0] == subject_science)
+    assert(len(filtered_subjects) == 1)
+    assert(subject_science in filtered_subjects.values())
 
 def test_should_return_subjects_which_study_time_goal_is_not_overdue(subject_controller, subject_english, subject_science):
     overdue_date = datetime(2000, 1, 1, 0, 0, 0, 0)
@@ -115,8 +115,8 @@ def test_should_return_subjects_which_study_time_goal_is_not_overdue(subject_con
 
     filtered_subjects = subject_controller.filter_by_study_goal_overdue(False)
 
-    assert(filtered_subjects.__len__() == 1)
-    assert(filtered_subjects[0] == subject_english)
+    assert(len(filtered_subjects) == 1)
+    assert(subject_english in filtered_subjects.values())
 
 def test_should_return_empty_when_there_is_no_subject_with_study_time_goal_overdue(subject_controller, subject_english):
     valid_date = datetime.today() + timedelta(days=1)
@@ -127,7 +127,7 @@ def test_should_return_empty_when_there_is_no_subject_with_study_time_goal_overd
 
     filtered_subjects = subject_controller.filter_by_study_goal_overdue(True)
 
-    assert(filtered_subjects.__len__() == 0)
+    assert(len(filtered_subjects) == 0)
 
 def test_should_return_empty_when_all_subjects_study_time_goal_overdue(subject_controller, subject_english):
     overdue_date = datetime(2000, 1, 1, 0, 0, 0, 0)
@@ -138,7 +138,7 @@ def test_should_return_empty_when_all_subjects_study_time_goal_overdue(subject_c
 
     filtered_subjects = subject_controller.filter_by_study_goal_overdue(False)
 
-    assert(filtered_subjects.__len__() == 0)
+    assert(len(filtered_subjects) == 0)
 
 def test_calculate_average_term_grade_with_0_subjects(subject_controller):
     average_grade = subject_controller.get_average_term_grade()
@@ -191,3 +191,11 @@ def test_total_credits_should_not_count_when_student_has_not_passing_grade(subje
     subject_controller.add_subject(subject_science)
 
     assert(subject_controller.get_current_term_credits(credit_conversion_method = lambda x: x/4) == 0)
+
+def test_update_existing_subject_attendance(subject_controller, subject_english):
+    subject_initial_attendance = subject_english.get_current_attendance()
+    subject_controller.add_subject(subject_english)
+    extra_attendance = 10
+    subject_controller.update_subject_attendance(subject_english.name, extra_attendance)
+
+    assert(subject_controller.subjects[subject_english.name].get_current_attendance() == subject_initial_attendance + extra_attendance)

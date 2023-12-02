@@ -18,6 +18,11 @@ def file_deleter() -> None:
     yield None
     os.remove('test_controller.json')
 
+@pytest.fixture
+def separate_file_deleter() -> None:
+    yield None
+    os.remove('subjects_not_passing.json')
+
 def test_adding_subject_is_persistent(subject_60_hours: Subject, file_deleter):
     controller = SubjectController()
     
@@ -61,11 +66,9 @@ def test_removing_subject_that_was_not_stored(subject_60_hours: Subject):
 def test_check_for_enough_credits_to_graduate(subject_60_hours):
     controller = SubjectController()
 
-    subject_60_hours.update_attendance(45)
     subject_60_hours.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
 
     second_subject_60_hours = Subject('second_example', 60)
-    second_subject_60_hours.update_attendance(45)
     second_subject_60_hours.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 60))
     
     minimal_credits_to_graduate = 8
@@ -73,5 +76,28 @@ def test_check_for_enough_credits_to_graduate(subject_60_hours):
 
     controller.add_subject(subject_60_hours)
     controller.add_subject(second_subject_60_hours)
+    controller.update_subject_attendance(subject_60_hours.name, 45)
+    controller.update_subject_attendance(second_subject_60_hours.name, 45)
+
 
     assert(controller.has_enough_credits_to_graduate(minimal_credits_to_graduate, credit_conversion_method))
+
+def test_store_only_subjects_without_passing_grade_in_separate_file(separate_file_deleter):
+    
+    subject_science = Subject('Science', 60)
+    subject_science.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 80))
+
+    subject_english = Subject('English', 60)
+    subject_english.add_graded_assignment(GradedAssignment('Exam', datetime.now(), 100, 50))
+
+    controller = SubjectController()
+
+    controller.add_subject(subject_science)
+    controller.add_subject(subject_english)
+    
+    controller.store('subjects_not_passing.json', filter='passing_grade', include_flag=False)
+    
+    controller.load('subjects_not_passing.json')
+
+    assert(subject_english in controller.subjects.values())
+    assert(subject_science not in controller.subjects.values())

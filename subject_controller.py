@@ -42,33 +42,50 @@ class SubjectController():
         return self.get_current_term_credits(credit_conversion_method) >= minimal_credits
     
     def filter_by_passing_grade(self, has_passing_grade: bool):
-        filtered_subjects = []
+        filtered_subjects = {}
 
         for subject in self.subjects.values():
             if (has_passing_grade and subject.has_passing_grade()) or (not has_passing_grade and not subject.has_passing_grade()):
-                filtered_subjects.append(subject)
+                filtered_subjects[subject.name] = subject
 
         return filtered_subjects
 
     def filter_by_study_goal_overdue(self, study_goal_overdue: bool):
-        filtered_subjects = []
+        filtered_subjects = {}
 
         for subject in self.subjects.values():
             if (study_goal_overdue and subject.is_study_time_goal_overdue()) or (not study_goal_overdue and not subject.is_study_time_goal_overdue()):
-                filtered_subjects.append(subject)
+                filtered_subjects[subject.name] = subject
 
         return filtered_subjects
+    
+    def update_subject_attendance(self, subject_name, hours):
+        self.subjects[subject_name].update_attendance(hours)
 
-    def store(self, file_name='subjects.json'):
+    def store(self, file_name='subjects.json', filter: str = None, include_flag: bool = True):
+        '''Filter Options: "passing_grade" | "study_goal" '''
+        
+        filter_options = {
+            'passing_grade': self.filter_by_passing_grade,
+            'study_goal': self.filter_by_study_goal_overdue
+        }
+
         with open(file_name, 'w') as subjects_file:
-            subjects_file.write(self.to_json())
+            if filter is not None:
+                subjects_to_save = filter_options[filter](include_flag)
+                subjects_file.write(self.to_json(subjects_to_save))
+            else:
+                subjects_file.write(self.to_json())
 
         subjects_file.close()
 
-    def to_json(self):
+    def to_json(self, subjects_to_save = None):
+        if subjects_to_save is None:
+            subjects_to_save = self.subjects
+            
         subjects_dict = {}
 
-        for subject in self.subjects.values():
+        for subject in subjects_to_save.values():
             subjects_dict[subject.name] = subject.to_json()
 
         return json.dumps(subjects_dict, indent=2)
@@ -79,6 +96,8 @@ class SubjectController():
             subjects = dict(json.loads(subjects_file.read()))
 
             subjects_file.close()
+
+            self.subjects = {}
     
             for subject in subjects.values():
                 subject = Subject.from_json(subject)
