@@ -31,7 +31,7 @@ def test_adding_subject_is_persistent(subject_60_hours: Subject, file_deleter):
     controller.load(file_name='test_controller.json')
 
     # check for added subject
-    assert(subject_60_hours in controller.subjects_list)
+    assert(subject_60_hours in controller.subjects.values())
 
 def test_removing_subject_is_persistent(subject_60_hours: Subject, file_deleter):
     controller = SubjectController()
@@ -41,21 +41,21 @@ def test_removing_subject_is_persistent(subject_60_hours: Subject, file_deleter)
 
     controller.load(file_name='test_controller.json')
 
-    assert(subject_60_hours in controller.subjects_list)
+    assert(subject_60_hours in controller.subjects.values())
 
     controller.remove_subject(subject_60_hours)
 
     controller.store('test_controller.json')
 
     controller.load(file_name='test_controller.json')
-    assert(subject_60_hours not in controller.subjects_list)
+    assert(subject_60_hours not in controller.subjects.values())
 
 def test_removing_subject_that_was_not_stored(subject_60_hours: Subject):
     controller = SubjectController()
 
     controller.load('test_controller.json')
 
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         controller.remove_subject(subject_60_hours)
 
 def test_check_for_enough_credits_to_graduate(subject_60_hours):
