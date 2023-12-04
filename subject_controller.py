@@ -12,8 +12,8 @@ class SubjectController():
         
         self.subjects[subject.name] = subject
 
-    def remove_subject(self, subject: Subject):
-        self.subjects.pop(subject.name)
+    def remove_subject(self, subject_name):
+        self.subjects.pop(subject_name)
 
     def subject_already_exists(self, subject: Subject):
         return subject.name in self.subjects.keys()
