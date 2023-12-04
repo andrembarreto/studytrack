@@ -22,6 +22,11 @@ class Attendance:
     def has_minimum_attendance(self):
         return self.current_attendance >= self.get_minimum_attendance()
     
+    def print(self):
+        print(f"Workload in hours: {self.workload_hours}")
+        print(f"Current attendance in hours: {self.current_attendance}")
+        print(f"Minimum attendance: {self.get_minimum_attendance()}")
+
     def to_json(self):
         attendance_dict = {"workload_hours" : self.workload_hours,
                         "current_attendance" : self.current_attendance,
