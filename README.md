@@ -15,6 +15,17 @@ disciplina.
 - **Attendance**: Frequência do estudante em determinado Subject, sendo composta pela carga horária da disciplina, as horas realizadas pelo aluno e o
 percentual mínimo de assiduidade necessário.
 
+## Instruções de execução
+A interação com a aplicação é realizada via linha de comando. Para executar o sistema, deve-se utilizar o comando `python main.py`. Então, serão exibidas as opções disponibilizadas para:
+1. Listar subjects
+2. Adicionar subject
+3. Remover subject
+4. Filtrar subjects
+5. Calcular média geral das disciplinas
+6. Calcular quantidade atual de créditos
+7. Verificar status da graduação
+8. Atualizar frequência em subject
+
 ## Tecnologias Utilizadas
 O sistema foi implementado utilizando Python.
 
