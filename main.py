@@ -42,6 +42,14 @@ def has_enouth_credits_to_graduate():
     else:
         print("You don't have enough credits to graduate yet")
 
+def print_subjects():
+    if len(controller.subjects) == 0:
+        print("\nNo subjects added yet!\n")
+    for subject in controller.subjects.values():
+        print("*********************************************************************************")
+        subject.print()
+        print("*********************************************************************************")
+
 def print_subjects_by_passing_grade():
     print("Filter by:")
     print("1. Has passing grade")
@@ -115,22 +123,25 @@ print("""\
                      |___/""")
 while True:
     print("\nSelect an option:")
-    print("1. Add subject")
-    print("2. Remove subject")
-    print("3. Search subjects by filter")
-    print("4. Calculate average term grade")
-    print("5. Calculate current credits")
-    print("6. Check graduation status")
-    print("7. Update subject attendance")
+    print("1. List subjects")
+    print("2. Add subject")
+    print("3. Remove subject")
+    print("4. Search subjects by filter")
+    print("5. Calculate average term grade")
+    print("6. Calculate current credits")
+    print("7. Check graduation status")
+    print("8. Update subject attendance")
 
     selected_option = input("Option: ")
 
     clear_terminal()
     if selected_option == '1':
-        add_subject()
+        print_subjects()
     elif selected_option == '2':
-        remove_subject()
+        add_subject()
     elif selected_option == '3':
+        remove_subject()
+    elif selected_option == '4':
         print("Select the desired filter:")
         print("1. Filter by passing grade")
         print("2. Filter by study goal overdue")
@@ -141,13 +152,13 @@ while True:
             print_subjects_by_study_goal_overdue()
         else:
             print("ERROR: invalid option")
-    elif selected_option == '4':
-        get_average_term_grade()
     elif selected_option == '5':
-        get_current_term_credits()
+        get_average_term_grade()
     elif selected_option == '6':
-        has_enouth_credits_to_graduate()
+        get_current_term_credits()
     elif selected_option == '7':
+        has_enouth_credits_to_graduate()
+    elif selected_option == '8':
         update_subject_attendance()
     else:
         print("ERROR: invalid option")
