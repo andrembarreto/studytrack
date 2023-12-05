@@ -65,6 +65,14 @@ class Subject:
     def get_current_attendance(self):
         return self.attendance.current_attendance
     
+    def print(self):
+        print(f"Name: {self.name}")
+        print(f"Passing grade: {self.passing_grade}")
+        print(f"Current grade: {self.current_grade()}")
+        print(f"Target study time: {self.time_study_goal}")
+        print(f"Studied time: {self.time_studied}")
+        self.attendance.print()
+    
     def to_json(self):
         def timedelta_to_json(timedelta_obj: timedelta):
             timedelta_dict = {"days" : timedelta_obj.days,

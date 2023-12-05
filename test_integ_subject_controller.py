@@ -44,7 +44,7 @@ def test_removing_subject_is_persistent(subject_60_hours: Subject, test_file):
 
     assert(subject_60_hours in controller.subjects.values())
 
-    controller.remove_subject(subject_60_hours)
+    controller.remove_subject(subject_60_hours.name)
 
     controller.store(test_file)
 
@@ -57,7 +57,7 @@ def test_removing_subject_that_was_not_stored(subject_60_hours: Subject):
     controller.load('test_file.json')
 
     with pytest.raises(KeyError):
-        controller.remove_subject(subject_60_hours)
+        controller.remove_subject(subject_60_hours.name)
 
 def test_check_for_enough_credits_to_graduate(subject_60_hours: Subject):
     controller = SubjectController()

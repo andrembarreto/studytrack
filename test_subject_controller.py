@@ -32,12 +32,8 @@ def test_can_remove_added_subject(subject_controller, subject_science):
     subject_controller.add_subject(subject_science)
     assert(subject_science in subject_controller.subjects.values())
 
-    subject_controller.remove_subject(subject_science)
+    subject_controller.remove_subject(subject_science.name)
     assert(subject_science not in subject_controller.subjects.values())
-
-def test_cannot_remove_subject_not_added(subject_controller, subject_science):
-    with pytest.raises(KeyError):
-        subject_controller.remove_subject(subject_science)
 
 def test_should_return_subjects_in_which_student_has_passing_grade(subject_controller, subject_english, subject_science):
     graded_assignment = GradedAssignment('assignment', datetime(2001, 1, 1, 0, 0, 0, 1), 100, 60)
